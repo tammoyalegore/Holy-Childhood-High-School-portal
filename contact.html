@@ -1,0 +1,122 @@
+<!-- 
+Group Members:
+1. Tammoya Legore (ID: 2407444) - Monday/3-5
+2. Peter John Kennedy (ID: 2507390) - Monday/3-5
+3. Jonathan Daye (ID: 2508418) - Monday/3-5
+4. Dahlia-Marie Williams (ID: 2506230) - Monday/3-5
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Holy Childhood High School</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+         <!-- Logo and Brand Title -->
+            <a href="index.html" class="logo-text" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+            <img src="assets/HCHS_logo.jpg" alt="Holy Childhood High School Crest" style="height: 42px; width: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--hchs-gold);">
+            <span style="color: var(--hchs-gold); font-weight: bold; font-size: 1.1rem;">HCHS Portal</span>
+            </a>
+        
+         <!-- Navigation Links -->
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="login.html" class="btn-primary" style="padding: 8px 16px;">Portal Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+            
+            <!-- School Contact Info Card -->
+            <section class="card">
+                <h1 style="color: var(--hchs-gold); margin-top: 0;">Get In Touch</h1>
+                <p>Have questions regarding admissions, transcripts, tuition ledgers, or portal access? Reach out directly to our administrative office.</p>
+                
+                <div style="margin-top: 24px;">
+                    <p><strong>Campus Address:</strong><br>9 Skibo Avenue, Kingston 10, Jamaica</p>
+                    <p><strong>Telephone:</strong><br>(876) 926-6375 / (876) 929-4310</p>
+                    <p><strong>Administrative Email:</strong><br>admin@holychildhoodhigh.edu.jm</p>
+                    <p><strong>Office Hours:</strong><br>Monday – Friday: 8:00 AM – 4:00 PM</p>
+                </div>
+            </section>
+
+            <!-- Custom Message Dispatch Form -->
+            <section class="card">
+                <h2 style="color: var(--hchs-gold); margin-top: 0;">Message Dispatch Form</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="senderName">Full Name *</label>
+                        <input type="text" id="senderName" name="senderName" 
+                               pattern="^[A-Za-z\s\-]{3,50}$" 
+                               title="Enter 3 to 50 alphabetic characters only."
+                               placeholder="e.g., Brianna Thompson" required>
+                        <span class="form-hint">Letters and spaces only (3–50 characters).</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senderEmail">Email Address *</label>
+                        <input type="email" id="senderEmail" name="senderEmail" 
+                               placeholder="e.g., b.thompson@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senderPhone">Jamaican Contact Number *</label>
+                        <input type="tel" id="senderPhone" name="senderPhone" 
+                               pattern="^(876|658)-?[0-9]{3}-?[0-9]{4}$" 
+                               title="Format: 876-555-1234 or 658-555-1234"
+                               placeholder="876-555-0192" required>
+                        <span class="form-hint">Format: 876-XXX-XXXX or 658-XXX-XXXX</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiryCategory">Department / Inquiry Type *</label>
+                        <select id="inquiryCategory" name="inquiryCategory" required>
+                            <option value="" disabled selected>-- Select a Department --</option>
+                            <option value="admissions">Admissions & Enrollment</option>
+                            <option value="academics">Academic Records & Grades</option>
+                            <option value="bursary">Bursary & Tuition Ledger</option>
+                            <option value="technical">Portal Technical Support</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="messageBody">Message *</label>
+                        <textarea id="messageBody" name="messageBody" rows="4" 
+                                  minlength="15" maxlength="500"
+                                  placeholder="Type your message here (minimum 15 characters)..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%;">Dispatch Message</button>
+                    <p id="formFeedback" style="color: var(--hchs-gold); font-weight: bold; margin-top: 12px; display: none;"></p>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Holy Childhood High School Portal Project | CIT2011 Web Programming Group Assignment</p>
+    </footer>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const feedback = document.getElementById('formFeedback');
+            const sender = document.getElementById('senderName').value;
+            feedback.textContent = `Thank you, ${sender}. Your message has been dispatched to the HCHS administrative office.`;
+            feedback.style.display = 'block';
+            this.reset();
+        });
+    </script>
+
+</body>
+</html>

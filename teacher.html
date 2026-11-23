@@ -1,0 +1,100 @@
+<!-- 
+Group Members:
+1. Tammoya Legore (ID: 2407444) - Monday/3-5
+2. Peter John Kennedy (ID: 2507390) - Monday/3-5
+3. Jonathan Daye (ID: 2508418) - Monday/3-5
+4. Dahlia-Marie Williams (ID: 2506230) - Monday/3-5
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard | Holy Childhood High School</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo-text" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <img src="assets/HCHS_logo.jpg" alt="Holy Childhood High School Crest" style="height: 42px; width: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--hchs-gold);">
+                <span style="color: var(--hchs-gold); font-weight: bold; font-size: 1.1rem;">HCHS Portal</span>
+            </a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="teacher.html">Teacher Panel</a></li>
+                <li><a href="report-card.html">Report Cards</a></li>
+                <li><button class="btn-primary" style="padding: 8px 16px;" onclick="logout()">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- Welcome -->
+        <section class="card">
+            <h1 style="color: var(--hchs-gold); margin-top: 0;">Teacher Dashboard</h1>
+            <p id="welcomeText"></p>
+        </section>
+
+        <!-- Step 1: Filter Routing -->
+        <section class="card">
+            <h2 style="color: var(--hchs-gold); margin-top: 0;">Load a Class</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+                <div class="form-group">
+                    <label for="levelSelect">Class Level</label>
+                    <select id="levelSelect"></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subjectSelect">Subject</label>
+                    <select id="subjectSelect" disabled></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="semesterSelect">Semester</label>
+                    <select id="semesterSelect"></select>
+                </div>
+            </div>
+
+            <button id="loadRosterBtn" class="btn-primary" disabled>Load Roster</button>
+            <p id="filterHint" style="color: #94a3b8; margin-top: 12px;"></p>
+        </section>
+
+        <!-- Step 2: Grade Entry Table -->
+        <section class="card" id="gradeEntryPanel" hidden>
+            <h2 style="color: var(--hchs-gold); margin-top: 0;">
+                Grade Entry &mdash; <span id="gradeEntrySubject"></span>
+            </h2>
+
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead id="gradeTableHead"></thead>
+                    <tbody id="rosterTableBody"></tbody>
+                </table>
+            </div>
+
+            <p id="feedbackMessage" style="margin-top: 16px; font-weight: bold;"></p>
+            <button id="saveGradesBtn" class="btn-primary">Save Grade Batch</button>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Holy Childhood High School Portal</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/database.js"></script>
+    <script src="js/session.js"></script>
+    <script>checkRole("teacher");</script>
+    <script src="js/portal-data.js"></script>
+    <script src="js/teacher.js"></script>
+</body>
+</html>

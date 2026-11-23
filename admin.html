@@ -1,0 +1,230 @@
+<!--
+Group Members:
+1. Tammoya Legore (ID: 2407444) - Monday/3-5
+2. Peter John Kennedy (ID: 2507390) - Monday/3-5
+3. Jonathan Daye (ID: 2508418) - Monday/3-5
+4. Dahlia-Marie Williams (ID: 2506230) - Monday/3-5
+
+Project: Holy Childhood High School Portal
+Role: Administrative Interface Developer
+File: admin.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Holy Childhood High School</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <a href="index.html" class="logo-text" style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+            <img src="assets/HCHS_logo.jpg" alt="Holy Childhood High School Crest" style="height: 28px; width: 28px; flex-shrink: 0; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--hchs-gold);">
+            <span>HCHS Portal</span>
+        </a>
+        <ul>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#registry">Student Registry</a></li>
+            <li><a href="#financial-ledger">Financial Ledger</a></li>
+            <li><button type="button" class="btn-primary" style="padding: 6px 14px;" onclick="logout()">Logout</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main id="dashboard">
+
+    <h2>Administrator Dashboard</h2>
+
+    <section class="admin-stats">
+        <article class="admin-stat-card">
+            <h3>Total Students</h3>
+            <p id="totalStudents">0</p>
+        </article>
+
+        <article class="admin-stat-card">
+            <h3>Active Students</h3>
+            <p id="activeStudents">0</p>
+        </article>
+    </section>
+
+    <section class="card" id="registry">
+
+        <h2 id="formHeading">Register Student</h2>
+
+        <form id="studentForm">
+            <input type="hidden" id="originalId">
+
+            <label for="studentId">Student ID</label>
+            <input id="studentId" required>
+
+            <label for="firstName">First Name</label>
+            <input id="firstName" required>
+
+            <label for="lastName">Last Name</label>
+            <input id="lastName" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+
+            <label for="className">Class</label>
+            <select id="className" required>
+                <option value="">Select Class</option>
+                <option>Grade 7</option>
+                <option>Grade 8</option>
+                <option>Grade 9</option>
+                <option>Grade 10</option>
+                <option>Grade 11</option>
+                <option>Sixth Form</option>
+            </select>
+
+            <label for="semester">Semester</label>
+            <select id="semester" required>
+                <option value="">Select Semester</option>
+                <option>Semester 1</option>
+                <option>Semester 2</option>
+            </select>
+
+            <button type="submit" id="saveButton">Save Student</button>
+            <button type="reset" id="clearButton">Clear</button>
+        </form>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Student Records</h2>
+
+        <input type="search" id="search"
+               placeholder="Search students...">
+
+        <div class="admin-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Class</th>
+                        <th>Semester</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTable"></tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <!-- Financial Ledger Module -->
+    <section class="card" id="financial-ledger">
+        <h2>Financial Ledger Module</h2>
+        <p class="form-hint">Map school tuitions, record active transactions, and track real-time Paid, Pending, and Outstanding balances.</p>
+
+        <form id="paymentForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: end; margin-bottom: 16px;">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="payStudentId">Student ID *</label>
+                <input type="text" id="payStudentId" placeholder="e.g., HCHS-002" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="payAmount">Payment Amount (JMD) *</label>
+                <input type="number" id="payAmount" min="100" step="100" placeholder="20000" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="payMethod">Payment Channel *</label>
+                <select id="payMethod" required>
+                    <option value="NCB Online Transfer">NCB Online Transfer</option>
+                    <option value="Scotiabank Deposit">Scotiabank Deposit</option>
+                    <option value="Bursary Cash">Bursary Cash</option>
+                    <option value="Wompi Card Payment">Wompi Card Payment</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-primary">Record Payment</button>
+        </form>
+
+        <p id="paymentFeedback" style="font-weight: bold; margin-bottom: 12px; display: none;"></p>
+
+        <div class="admin-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Full Name</th>
+                        <th>Class / Form</th>
+                        <th>Tuition (JMD)</th>
+                        <th>Paid (JMD)</th>
+                        <th>Balance (JMD)</th>
+                        <th>Status</th>
+                        <th>Last Transaction</th>
+                    </tr>
+                </thead>
+                <tbody id="adminLedgerBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<script src="js/portal-data.js"></script>
+<script src="js/session.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/finance.js"></script>
+<script>
+    function renderAdminLedger(highlightId = null) {
+        const tbody = document.getElementById("adminLedgerBody");
+        if (!tbody) return;
+        const records = getLedgerRecords();
+        tbody.innerHTML = "";
+
+        records.forEach(student => {
+            const badgeClass = student.status === "Paid"
+                ? "badge-paid"
+                : student.status === "Pending"
+                    ? "badge-pending"
+                    : "badge-outstanding";
+            const flashClass = highlightId === student.studentId ? "flash-updated" : "";
+
+            tbody.innerHTML += `
+                <tr class="${flashClass}">
+                    <td><strong>${student.studentId}</strong></td>
+                    <td>${student.fullName}</td>
+                    <td>${student.className} (${student.formClass})</td>
+                    <td>$${student.totalTuition.toLocaleString()}</td>
+                    <td>$${student.amountPaid.toLocaleString()}</td>
+                    <td><strong>$${student.balance.toLocaleString()}</strong></td>
+                    <td><span class="status-badge ${badgeClass}">${student.status}</span></td>
+                    <td>${student.lastPaymentDate}<br><small class="form-hint">${student.paymentMethod}</small></td>
+                </tr>
+            `;
+        });
+    }
+
+    renderAdminLedger();
+
+    document.getElementById("paymentForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const id = document.getElementById("payStudentId").value;
+        const amount = document.getElementById("payAmount").value;
+        const method = document.getElementById("payMethod").value;
+
+        const result = recordTuitionPayment(id, amount, method);
+        const feedback = document.getElementById("paymentFeedback");
+        feedback.textContent = result.message;
+        feedback.className = result.success ? "feedback-success" : "feedback-error";
+        feedback.style.display = "block";
+
+        if (result.success) {
+            renderAdminLedger(result.studentId);
+            this.reset();
+        }
+    });
+</script>
+
+</body>
+</html>

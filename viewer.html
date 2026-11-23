@@ -1,0 +1,198 @@
+<!--
+Group Members:
+1. Tammoya Legore (ID: 2407444) - Monday/3-5
+2. Peter John Kennedy (ID: 2507390) - Monday/3-5
+3. Jonathan Daye (ID: 2508418) - Monday/3-5
+4. Dahlia-Marie Williams (ID: 2506230) - Monday/3-5
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read-Only Viewer &amp; Reports | Holy Childhood High School</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+    <header class="no-print">
+        <nav>
+            <a href="index.html" class="logo-text" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <img src="assets/HCHS_logo.jpg" alt="Holy Childhood High School Crest" style="height: 42px; width: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--hchs-gold);">
+                <span style="color: var(--hchs-gold); font-weight: bold; font-size: 1.1rem;">HCHS Portal</span>
+            </a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="viewer.html">Viewer &amp; Reports</a></li>
+                <li><button type="button" onclick="logout()" class="btn-primary" style="padding: 8px 16px;">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Print-Only Official School Letterhead -->
+        <div class="print-only-header">
+            <h1 style="margin: 0;">HOLY CHILDHOOD HIGH SCHOOL</h1>
+            <p style="margin: 4px 0;">9 Skibo Avenue, Kingston 10, Jamaica</p>
+            <p style="margin: 0; font-weight: bold;">OFFICIAL READ-ONLY STUDENT PROFILE, ACADEMIC &amp; FINANCIAL STATEMENT</p>
+        </div>
+
+        <!-- Universal Search Matrix -->
+        <section class="card no-print">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h1 style="color: var(--hchs-gold); margin: 0;">Universal Search Matrix &amp; Reporting Platform</h1>
+                    <p style="margin: 6px 0 0 0;">Read-only lookup across unified student profiles, academic averages, and bursary statements.</p>
+                </div>
+                <button type="button" onclick="window.print()" class="btn-primary">Print Official Report</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-top: 20px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="universalSearch">Search by Student ID, Full Name, or Class/Form</label>
+                    <input type="search" id="universalSearch" placeholder="e.g., HCHS-001, Brianna, or 10A...">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="statusFilter">Filter by Financial Status</label>
+                    <select id="statusFilter">
+                        <option value="ALL">All Statuses</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Outstanding">Outstanding</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unified Student Statement Preview (Selected Student) -->
+        <section class="card" id="unifiedStatementCard">
+            <h2 style="color: var(--hchs-gold); margin-top: 0;">Unified Student Statement (Read-Only)</h2>
+            <div id="selectedStudentProfile"></div>
+        </section>
+
+        <!-- Static Non-Editable Reporting Platform -->
+        <section class="card">
+            <h2 style="color: var(--hchs-gold); margin-top: 0;">Master Academic &amp; Financial Directory</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Full Name</th>
+                        <th>Class / Form</th>
+                        <th>Academic Avg</th>
+                        <th>Tuition (JMD)</th>
+                        <th>Paid (JMD)</th>
+                        <th>Balance (JMD)</th>
+                        <th>Status</th>
+                        <th class="no-print">Statement</th>
+                    </tr>
+                </thead>
+                <tbody id="ledgerTableBody"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="no-print">
+        <p>&copy; 2026 Holy Childhood High School Portal Project | CIT2011 Web Programming Group Assignment</p>
+    </footer>
+
+    <script src="js/portal-data.js"></script>
+    <script src="js/session.js"></script>
+    <script src="js/finance.js"></script>
+    <script>
+        checkRole("viewer");
+
+        function renderUnifiedStatement(student) {
+            const container = document.getElementById("selectedStudentProfile");
+            if (!student) {
+                container.innerHTML = '<p class="form-hint">No student record selected.</p>';
+                return;
+            }
+
+            const badgeClass = student.status === "Paid"
+                ? "badge-paid"
+                : student.status === "Pending"
+                    ? "badge-pending"
+                    : "badge-outstanding";
+
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                    <div>
+                        <p><strong>Student ID:</strong> ${student.studentId}</p>
+                        <p><strong>Full Name:</strong> ${student.fullName}</p>
+                        <p><strong>Email:</strong> ${student.email}</p>
+                        <p><strong>Class / Form:</strong> ${student.className} (${student.formClass})</p>
+                    </div>
+                    <div>
+                        <p><strong>Academic Average:</strong> ${student.averageText}</p>
+                        <p><strong>Academic Standing:</strong> ${student.standing}</p>
+                        <p><strong>Semester:</strong> ${student.semester}</p>
+                    </div>
+                    <div>
+                        <p><strong>Total Tuition:</strong> JMD $${student.totalTuition.toLocaleString()}</p>
+                        <p><strong>Amount Paid:</strong> JMD $${student.amountPaid.toLocaleString()}</p>
+                        <p><strong>Balance Due:</strong> <strong>JMD $${student.balance.toLocaleString()}</strong></p>
+                        <p><strong>Account Status:</strong> <span class="status-badge ${badgeClass}">${student.status}</span></p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderViewerTable(records, selectedId = null) {
+            const tbody = document.getElementById("ledgerTableBody");
+            tbody.innerHTML = "";
+
+            if (records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No matching student records found.</td></tr>';
+                renderUnifiedStatement(null);
+                return;
+            }
+
+            const activeStudent = records.find(r => r.studentId === selectedId) || records[0];
+            renderUnifiedStatement(activeStudent);
+
+            records.forEach(student => {
+                const badgeClass = student.status === "Paid"
+                    ? "badge-paid"
+                    : student.status === "Pending"
+                        ? "badge-pending"
+                        : "badge-outstanding";
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${student.studentId}</strong></td>
+                        <td>${student.fullName}</td>
+                        <td>${student.className} (${student.formClass})</td>
+                        <td>${student.averageText} (${student.standing})</td>
+                        <td>$${student.totalTuition.toLocaleString()}</td>
+                        <td>$${student.amountPaid.toLocaleString()}</td>
+                        <td><strong>$${student.balance.toLocaleString()}</strong></td>
+                        <td><span class="status-badge ${badgeClass}">${student.status}</span></td>
+                        <td class="no-print">
+                            <button type="button" class="btn-primary" style="padding: 6px 12px; font-size: 0.85rem;"
+                                onclick="viewStatement('${student.studentId}')">View</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateViewerResults(selectedId = null) {
+            const q = document.getElementById("universalSearch").value;
+            const status = document.getElementById("statusFilter").value;
+            renderViewerTable(searchStudentProfiles(q, status), selectedId);
+        }
+
+        function viewStatement(studentId) {
+            updateViewerResults(studentId);
+            document.getElementById("unifiedStatementCard").scrollIntoView({ behavior: "smooth" });
+        }
+
+        updateViewerResults();
+        document.getElementById("universalSearch").addEventListener("input", () => updateViewerResults());
+        document.getElementById("statusFilter").addEventListener("change", () => updateViewerResults());
+    </script>
+</body>
+</html>
